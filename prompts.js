@@ -212,5 +212,5 @@ prompt:[
 ["act","Act only when I reply 'approved' to a specific alert. Log it."],
 ["report","Daily: checks run, failures, pages sent, actions, top metric change. Under 10 lines."],
 ["rules","Manual baseline before scheduling. Never restart without approval. Report outages honestly."],
-["output","Monitor plan, daily digest, top issue with context, gaps."]
+["output","Monitor plan, daily digest, top issue with context, gaps."]]}
 ];

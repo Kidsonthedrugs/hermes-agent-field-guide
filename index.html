@@ -5,6 +5,18 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Hermes Agent Field Guide</title>
 <meta name="description" content="How to use Hermes Agent. Setup, second brain, ten ready bots, and how to run a team of bots safely.">
+<meta name="theme-color" content="#0000f2">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Hermes Agent Field Guide">
+<meta property="og:title" content="Hermes Agent Field Guide">
+<meta property="og:description" content="Setup, second brain, ten ready bots, and how to run a team of bots safely.">
+<meta property="og:url" content="https://run-hermes-agent.vercel.app/">
+<meta property="og:image" content="https://run-hermes-agent.vercel.app/assets/hero.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Hermes Agent Field Guide">
+<meta name="twitter:description" content="Setup, second brain, ten ready bots, and how to run a team of bots safely.">
+<meta name="twitter:image" content="https://run-hermes-agent.vercel.app/assets/hero.webp">
+<link rel="canonical" href="https://run-hermes-agent.vercel.app/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=VT323&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -150,6 +162,10 @@ td:first-child{color:var(--ink);font-weight:600}
 .bot:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
 .bot:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
 .bot:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+a:focus:not(:focus-visible),button:focus:not(:focus-visible){outline:none}
+.skip{position:absolute;left:-9999px;top:0;z-index:60}
+.skip:focus{left:12px;top:8px;position:fixed;background:var(--ink);color:#fff;padding:10px 16px;font:500 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--gold)}
 .bot .top{display:flex;justify-content:space-between;font:500 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
 .bot b{font:400 34px/1 var(--display);text-transform:uppercase;margin:18px 0 8px}
 .bot span.s{font-size:16px;line-height:1.45;color:var(--soft)}
@@ -223,6 +239,11 @@ dialog[open]{display:flex;flex-direction:column;animation:pop 220ms var(--ease)}
   .srcs a{grid-template-columns:34px minmax(0,1fr)}
   .srcs .arr{display:none}
 }
+@media (pointer:coarse){
+  .btn,.btn.sm{min-height:40px}
+  nav.top a{min-height:40px;display:flex;align-items:center}
+  .fig-h .cp{min-height:36px}
+}
 @media (prefers-reduced-motion:reduce){
   *,*:before,*:after{animation:none!important;transition:none!important}
   html{scroll-behavior:auto}
@@ -232,6 +253,7 @@ dialog[open]{display:flex;flex-direction:column;animation:pop 220ms var(--ease)}
 
 <body>
 
+<a class="skip" href="#top">Skip to content</a>
 <header>
   <div class="wrap bar">
     <a class="brand" href="#top"><i class="wing"><svg viewBox="0 0 28 28"><path d="M6 20c3-3 7-7 11-6s8 4 10 6"/><path d="M8 16c3-3 6-5 10-4s7 4 9 5"/><path d="M10 12c2-2 5-3 8-2s6 4 7 5"/></svg></i>Hermes Agent Field Guide</a>
@@ -243,6 +265,7 @@ dialog[open]{display:flex;flex-direction:column;animation:pop 220ms var(--ease)}
       <a href="#system">System</a>
       <a href="#team">Team</a>
       <a href="#bots">10 bots</a>
+      <a href="#rules">Write your own</a>
       <a href="#sources">Sources</a>
     </nav>
     <button class="btn sm menu" id="menu" aria-expanded="false" aria-controls="nav">Menu</button>
@@ -573,7 +596,7 @@ Keep mailbox contents unchanged.</pre>
     </div>
     <p>A good run finishes every step that can be undone and stops cleanly at the rest. It should not come back at 10 percent done.</p>
     <div class="fig">
-      <div class="fig-h"><span>Fig_06 / a good receipt</span><span class="t">json</span></div>
+      <div class="fig-h"><span>Fig_05 / a good receipt</span><span class="t">json</span></div>
 <pre>{
   "completed": ["researched 42 accounts", "ranked 10 prospects", "drafted 10 messages"],
   "sent": 0,
@@ -585,7 +608,7 @@ Keep mailbox contents unchanged.</pre>
     <h3><em>B</em> Loop</h3>
     <p>"Keep trying until it works" is not a loop. It is an open budget with no clear goal.</p>
     <div class="fig">
-      <div class="fig-h"><span>Fig_07 / five parts of a loop</span><span class="t">adapted from Hermes docs</span></div>
+      <div class="fig-h"><span>Fig_06 / five parts of a loop</span><span class="t">adapted from Hermes docs</span></div>
 <pre>TARGET      what success means
 EVIDENCE    how the result is checked
 FEEDBACK    the exact gap
@@ -593,7 +616,7 @@ BOUND       how many retries are allowed
 ESCALATION  what happens when retries fail</pre>
     </div>
     <div class="fig">
-      <div class="fig-h"><span>Fig_08 / retry rules</span><span class="t">example</span></div>
+      <div class="fig-h"><span>Fig_07 / retry rules</span><span class="t">example</span></div>
 <pre>retry twice for a passing tool failure
 repair once for a failed format check
 ask the human when evidence conflicts
@@ -606,7 +629,7 @@ stop when the cost or time budget is reached</pre>
       <li><b>Check apart from building.</b> Code: tests and a clean diff. Research: sources and claim to evidence. Ops: counts before and after.</li>
     </ul>
     <div class="fig">
-      <div class="fig-h"><span>Fig_09 / a routine spec</span><span class="t">yaml</span></div>
+      <div class="fig-h"><span>Fig_08 / a routine spec</span><span class="t">yaml</span></div>
 <pre>routine: weekly_competitor_scan
 trigger:
   type: schedule
@@ -629,7 +652,7 @@ approval:
       <li><b>Give the group a goal, not a task list.</b> If you still copy files between bots, it is just chat windows.</li>
     </ul>
     <div class="fig">
-      <div class="fig-h"><span>Fig_10 / handoff packet</span><span class="t">json</span></div>
+      <div class="fig-h"><span>Fig_09 / handoff packet</span><span class="t">json</span></div>
 <pre>{
   "from": "researcher",
   "to": "writer",
@@ -642,7 +665,7 @@ approval:
 }</pre>
     </div>
     <div class="fig">
-      <div class="fig-h"><span>Fig_11 / a one person company</span><span class="t">adapted from @0xwhrrari</span></div>
+      <div class="fig-h"><span>Fig_10 / a one person company</span><span class="t">adapted from @0xwhrrari</span></div>
 <pre>YOU
  |
  v
@@ -657,7 +680,7 @@ CHIEF OF STAFF
 YOU APPROVE PUBLICATION</pre>
     </div>
     <div class="fig">
-      <div class="fig-h"><span>Fig_12 / role contract</span><span class="t">yaml</span></div>
+      <div class="fig-h"><span>Fig_11 / role contract</span><span class="t">yaml</span></div>
 <pre>name: Web Researcher
 owns: source collection and evidence packs
 inputs:   [topic brief, approved source list, previous archive]
@@ -691,7 +714,7 @@ done_when:
     <h3><em>E</em> The autonomy ladder</h3>
     <p>Move up only with proof. Move down when a routine gets worse.</p>
     <div class="fig">
-      <div class="fig-h"><span>Fig_13 / levels</span><span class="t">adapted from Hermes docs</span></div>
+      <div class="fig-h"><span>Fig_12 / levels</span><span class="t">adapted from Hermes docs</span></div>
 <pre>LEVEL 0  OBSERVE                watches, changes nothing
 LEVEL 1  PREPARE                researches, drafts, stages work that can be undone
 LEVEL 2  EXECUTE WITH APPROVAL  does the job, stops before risky steps
@@ -699,7 +722,7 @@ LEVEL 3  SCHEDULE OR TRIGGER    starts on its own, returns a receipt
 LEVEL 4  COORDINATE             a chief routes work, asks you only for judgment</pre>
     </div>
     <div class="fig">
-      <div class="fig-h"><span>Fig_14 / promotion gate</span><span class="t">yaml</span></div>
+      <div class="fig-h"><span>Fig_13 / promotion gate</span><span class="t">yaml</span></div>
 <pre>promotion_gate:
   minimum_clean_runs: 5
   verification_pass_rate: 1.0
@@ -732,7 +755,7 @@ LEVEL 4  COORDINATE             a chief routes work, asks you only for judgment<
     <h3><em>H</em> Launch checklist</h3>
     <p>Ask these before you leave a bot running overnight. Several no answers mean it needs a better harness, not more freedom.</p>
     <div class="fig">
-      <div class="fig-h"><span>Fig_15 / before overnight runs</span><button class="btn sm cp">Copy</button></div>
+      <div class="fig-h"><span>Fig_14 / before overnight runs</span><button class="btn sm cp">Copy</button></div>
 <pre>[ ] Does the bot own one clear result
 [ ] Is done defined before the run begins
 [ ] Are inputs and output locations explicit
@@ -774,7 +797,7 @@ LEVEL 4  COORDINATE             a chief routes work, asks you only for judgment<
       <li>Leads and helpers map to the chief and specialists in Part 05.</li>
     </ul>
     <div class="fig">
-      <div class="fig-h"><span>Fig_16 / Akshay's chart</span><span class="t">adapted from the post</span></div>
+      <div class="fig-h"><span>Fig_15 / Akshay's chart</span><span class="t">adapted from the post</span></div>
 <pre>                     YOU
                       |
                       v
@@ -834,10 +857,10 @@ LEVEL 4  COORDINATE             a chief routes work, asks you only for judgment<
   <div class="side"><div class="n">09</div><h2>Sources</h2><div class="src">Read the originals</div></div>
   <div class="body srcs">
     <a href="https://hermes-agent.nousresearch.com/docs" target="_blank" rel="noopener"><span class="i">01</span><span><b>Hermes Agent docs</b><small>Getting Started, Features, Memory, Skills, Configuration</small></span><span class="arr">Docs</span></a>
-    <a href="https://hermes-agent.nousresearch.com/docs/memory-system" target="_blank" rel="noopener"><span class="i">02</span><span><b>Memory System</b><small>Persistent memory, FTS5 recall, LLM summarization</small></span><span class="arr">Docs</span></a>
+    <a href="https://hermes-agent.nousresearch.com/docs/user-guide/features/memory" target="_blank" rel="noopener"><span class="i">02</span><span><b>Memory System</b><small>Persistent memory, FTS5 recall, LLM summarization</small></span><span class="arr">Docs</span></a>
     <a href="https://github.com/NousResearch/hermes-agent" target="_blank" rel="noopener"><span class="i">03</span><span><b>Hermes Agent GitHub</b><small>Open source, MIT license, self-hosted</small></span><span class="arr">GitHub</span></a>
-    <a href="https://hermes-agent.nousresearch.com/docs/architecture" target="_blank" rel="noopener"><span class="i">04</span><span><b>Architecture</b><small>Sandboxes, backends, skill creation, learning loop</small></span><span class="arr">Docs</span></a>
-    <a href="https://hermes-agent.nousresearch.com/docs/bot-mode" target="_blank" rel="noopener"><span class="i">05</span><span><b>Bot Mode</b><small>Named bots, own memory, skills, and routines</small></span><span class="arr">Docs</span></a>
+    <a href="https://hermes-agent.nousresearch.com/docs/developer-guide/architecture" target="_blank" rel="noopener"><span class="i">04</span><span><b>Architecture</b><small>Sandboxes, backends, skill creation, learning loop</small></span><span class="arr">Docs</span></a>
+    <a href="https://hermes-agent.nousresearch.com/docs/user-guide/bot-mode" target="_blank" rel="noopener"><span class="i">05</span><span><b>Bot Mode</b><small>Named bots, own memory, skills, and routines</small></span><span class="arr">Docs</span></a>
     <p class="p" style="margin-top:24px;font-size:15px">Features, regions, and menus can change. Check the docs for the latest.</p>
   </div>
 </section>
@@ -859,6 +882,12 @@ LEVEL 4  COORDINATE             a chief routes work, asks you only for judgment<
 </dialog>
 
 <script src="prompts.js"></script>
+<noscript>
+  <div class="wrap" style="padding:16px 28px;border-bottom:2px solid var(--ink);font:400 14px/1.6 var(--mono)">
+    JavaScript is off. The guide below still reads fine; the ten bot prompts in Part 07 need JS to open.
+    Read them directly in <a href="prompts.js">prompts.js</a> or the <a href="https://hermes-agent.nousresearch.com/docs">official docs</a>.
+  </div>
+</noscript>
 <script>
 const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 const slug=s=>s.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
@@ -911,7 +940,7 @@ nav.addEventListener("click",e=>{if(e.target.tagName==="A"){nav.classList.remove
 const links=[...nav.querySelectorAll("a")],secs=links.map(a=>document.querySelector(a.getAttribute("href")));
 const prog=document.getElementById("prog");
 function onScroll(){
-  const h=document.documentElement;prog.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+" %";
+  const h=document.documentElement;prog.style.width=(h.scrollHeight>h.clientHeight?h.scrollTop/(h.scrollHeight-h.clientHeight)*100:0)+"%";
   let k=-1;secs.forEach((s,i)=>{if(s&&s.getBoundingClientRect().top<140)k=i});
   links.forEach((a,i)=>a.classList.toggle("on",i===k));
 }

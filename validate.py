@@ -117,6 +117,46 @@ def validate_prompts_js() -> None:
     else:
         fail(f"steps={sc} prompt={pc} (expected 10 each)")
 
+    # A `];` tail is not proof the file parses: the object list was once left
+    # unclosed while startsWith/endsWith both passed. Parse it for real.
+    if _syntax_ok(PROMPTS_JS):
+        ok("prompts.js parses as JavaScript (node --check)")
+    else:
+        fail("prompts.js has a JavaScript syntax error — the whole page's JS dies")
+
+
+def _syntax_ok(path):
+    """Real syntax check via node when available; fall back to node-less parse."""
+    import shutil
+    import subprocess
+    node = shutil.which("node")
+    if node:
+        r = subprocess.run([node, "--check", str(path)], capture_output=True, text=True)
+        if r.returncode != 0:
+            print("    " + (r.stderr or "").strip().splitlines()[0])
+        return r.returncode == 0
+    # No node: bracket-balance the file as a weak fallback.
+    depth = 0
+    instr = None
+    esc = False
+    for ch in path.read_text(encoding="utf-8"):
+        if instr:
+            if esc:
+                esc = False
+            elif ch == "\\":
+                esc = True
+            elif ch == instr:
+                instr = None
+        elif ch in "\"'`":
+            instr = ch
+        elif ch in "([{":
+            depth += 1
+        elif ch in ")]}":
+            depth -= 1
+            if depth < 0:
+                return False
+    return depth == 0 and instr is None
+
 
 def validate_assets():
     if PROMPTS_JS.exists():
