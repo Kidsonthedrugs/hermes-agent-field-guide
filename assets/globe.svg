@@ -1,0 +1,21 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="globe">
+<g id="Icon">
+<path d="M6 2H18V4H6V2Z" fill="#0000F2"/>
+<path d="M6 20H18V22H6V20Z" fill="#0000F2"/>
+<path d="M4 4H6L6 6H4V4Z" fill="#0000F2"/>
+<path d="M9 4H11V6H9V4Z" fill="#0000F2"/>
+<path d="M9 18H11V20H9V18Z" fill="#0000F2"/>
+<path d="M13 18H15V20H13V18Z" fill="#0000F2"/>
+<path d="M7 6L9 6V18H7V6Z" fill="#0000F2"/>
+<path d="M15 6H17V18H15V6Z" fill="#0000F2"/>
+<path d="M13 4H15V6L13 6V4Z" fill="#0000F2"/>
+<path d="M20 4H18V6H20V4Z" fill="#0000F2"/>
+<path d="M2 6L4 6V18H2V6Z" fill="#0000F2"/>
+<path d="M22 6L20 6V18H22V6Z" fill="#0000F2"/>
+<path d="M4 18H6L6 20H4V18Z" fill="#0000F2"/>
+<path d="M20 18H18V20H20V18Z" fill="#0000F2"/>
+<path d="M3 11H21V13H3V11Z" fill="#0000F2"/>
+</g>
+</g>
+</svg>

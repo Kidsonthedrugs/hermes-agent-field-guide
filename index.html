@@ -1,0 +1,921 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hermes Agent Field Guide</title>
+<meta name="description" content="How to use Hermes Agent. Setup, second brain, ten ready bots, and how to run a team of bots safely.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/hermes-icon.png" type="image/png" sizes="120x120">
+<style>
+:root{
+  --ink:#0000f2;--soft:#2a2a2a;--mute:#6a6a6a;--faint:#9a9a9a;
+  --line:rgba(0,0,242,.10);--wash:#ffe6cb;--bg:#fff;
+  --display:"VT323",ui-monospace,monospace;
+  --serif:"Source Serif 4",Georgia,serif;
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+  --ease:cubic-bezier(.23,1,.32,1);
+  --wrap:1180px;
+  --gold:#ffbd39;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{margin:0;color:var(--soft);background:var(--bg);font:400 18px/1.65 var(--serif);-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(rgba(0,0,242,.04) 1px,transparent 1px);background-size:22px 22px}
+a{color:inherit}
+::selection{background:var(--ink);color:#fff}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 28px}
+.mono{font-family:var(--mono)}
+.k{font:500 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+
+/* header */
+header{position:sticky;top:0;z-index:20;background:#fff;border-bottom:2px solid var(--ink)}
+.bar{display:flex;align-items:center;gap:24px;height:60px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font:700 13px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.brand i{display:grid;place-items:center;width:28px;height:28px;background:var(--ink);color:#fff;font:400 22px/1 var(--display);font-style:normal}
+.brand .wing{fill:none;stroke:#fff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+nav.top{display:flex;gap:2px;margin-left:auto}
+nav.top a{font:500 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;text-decoration:none;padding:9px 10px;border:1px solid transparent}
+nav.top a:hover{border-color:var(--ink)}
+nav.top a.on{background:var(--ink);color:#fff}
+.btn.menu{display:none;margin-left:auto}
+.prog{position:absolute;left:0;bottom:-1px;height:2px;background:var(--ink);width:0}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:8px;font:500 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;text-decoration:none;
+  padding:13px 18px;border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer;box-shadow:4px 4px 0 var(--ink);
+  transition:transform 160ms var(--ease),box-shadow 160ms var(--ease)}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--ink)}
+.btn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ink)}
+.btn.solid{background:var(--ink);color:#fff}
+.btn.sm{padding:8px 11px;font-size:11px;box-shadow:2px 2px 0 var(--ink)}
+.btn.sm:hover{box-shadow:3px 3px 0 var(--ink)}
+.btn.sm:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
+
+/* hero */
+.hero{padding:88px 0 72px;border-bottom:2px solid var(--ink)}
+.hero .k{display:flex;gap:14px;align-items:center}
+.hero .k:before{content:"";width:28px;height:1px;background:var(--ink)}
+h1{font:400 clamp(66px,10.5vw,150px)/.84 var(--display);margin:26px 0 40px;letter-spacing:-.01em;text-transform:uppercase}
+h1 span{display:inline-block;background:var(--ink);color:#fff;padding:0 .12em}
+.lead{font-size:clamp(19px,2vw,23px);line-height:1.55;color:var(--soft);max-width:44ch;margin:0 0 36px}
+.cta{display:flex;flex-wrap:wrap;gap:16px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border:2px solid var(--ink);margin-top:64px;background:#fff}
+.stats div{padding:20px 22px;border-right:2px solid var(--ink)}
+.stats div:last-child{border-right:0}
+.stats b{display:block;font:400 54px/1 var(--display)}
+.stats span{font:500 11px/1.4 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+
+/* contents */
+.toc{padding:72px 0;border-bottom:2px solid var(--ink)}
+.toc-h{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:26px}
+.toc-h h2{font:400 46px/1 var(--display);margin:8px 0 0;text-transform:uppercase}
+.toc-grid{display:grid;grid-template-columns:repeat(4,1fr);border-top:2px solid var(--ink);border-left:2px solid var(--ink);background:#fff}
+.toc-grid a{display:block;text-decoration:none;padding:20px 20px 24px;border-right:2px solid var(--ink);border-bottom:2px solid var(--ink);min-height:150px;transition:background 160ms var(--ease),color 160ms var(--ease)}
+.toc-grid a:hover{background:var(--ink);color:#fff}
+.toc-grid a:hover .k{color:#bbb}
+.toc-grid b{display:block;font:400 30px/1 var(--display);margin:14px 0 8px;text-transform:uppercase}
+.toc-grid p{margin:0;font-size:15px;line-height:1.45;color:inherit;opacity:.8}
+
+/* sections */
+.sec{display:grid;grid-template-columns:250px minmax(0,1fr);gap:56px;padding:96px 0;border-bottom:2px solid var(--ink)}
+.side{position:sticky;top:96px;align-self:start}
+.side .n{font:400 92px/.8 var(--display)}
+.side h2{font:400 40px/.95 var(--display);margin:16px 0 12px;text-transform:uppercase}
+.side .src{font:400 12px/1.5 var(--mono);color:var(--mute)}
+
+.body{max-width:800px}
+.body>p,.body .p{color:var(--soft);margin:0 0 20px;max-width:66ch}
+.body .intro{font-size:22px;line-height:1.5;color:var(--ink)}
+h3{font:400 34px/1 var(--display);margin:56px 0 14px;text-transform:uppercase;display:flex;gap:14px;align-items:baseline}
+h3 em{font-style:normal;font-size:20px;color:var(--mute)}
+h3:first-child{margin-top:0}
+h4{font:700 12px/1.3 var(--mono);letter-spacing:.12em;text-transform:uppercase;margin:28px 0 10px}
+ul.list,ol.list{margin:0 0 22px;padding:0;list-style:none;max-width:66ch}
+ul.list li,ol.list li{position:relative;padding:0 0 8px 26px;color:var(--soft)}
+ul.list li:before{content:"";position:absolute;left:4px;top:.72em;width:7px;height:7px;background:var(--ink)}
+ol.list{counter-reset:c}
+ol.list li{counter-increment:c}
+ol.list li:before{content:counter(c,decimal-leading-zero);position:absolute;left:0;top:.28em;font:700 11px/1 var(--mono)}
+b,strong{color:var(--ink);font-weight:600}
+code{font:500 .86em var(--mono);background:var(--wash);border:1px solid var(--line);padding:1px 5px}
+.kbd{font:500 .82em var(--mono);border:2px solid var(--ink);padding:1px 6px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+
+/* figures and prompts */
+.fig{border:2px solid var(--ink);background:#fff;box-shadow:6px 6px 0 var(--ink);margin:26px 0 34px}
+.fig-h{display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:2px solid var(--ink);padding:8px 8px 8px 14px;font:500 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;min-height:40px}
+.fig-h .t{color:var(--mute)}
+.fig pre{margin:0;padding:18px 20px;font:400 13.5px/1.7 var(--mono);overflow-x:auto;white-space:pre}
+.fig.wrap-pre pre{white-space:pre-wrap}
+.fig.inv{background:var(--ink);color:#fff;box-shadow:6px 6px 0 var(--faint)}
+.fig.inv .fig-h{border-color:#444}
+.fig.inv .fig-h .t{color:#aaa}
+.fig.inv .btn{background:var(--ink);color:#fff;border-color:#fff;box-shadow:2px 2px 0 #fff}
+.fig img{display:block;width:100%;height:auto;filter:grayscale(1)}
+.cap{font:400 12px/1.5 var(--mono);color:var(--mute);padding:10px 14px;border-top:2px solid var(--ink)}
+
+/* steps */
+.steps{border-top:2px solid var(--ink);margin:8px 0 30px}
+.step{display:grid;grid-template-columns:70px minmax(0,1fr);gap:18px;padding:22px 0;border-bottom:1px solid var(--line)}
+.step .no{font:400 46px/.9 var(--display)}
+.step h5{font:600 19px/1.3 var(--serif);margin:2px 0 6px}
+.step p{margin:0 0 10px;color:var(--soft)}
+.step p:last-child{margin-bottom:0}
+
+/* grids */
+.grid{display:grid;gap:0;border-top:2px solid var(--ink);border-left:2px solid var(--ink);margin:24px 0 34px;background:#fff}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}
+.cell{border-right:2px solid var(--ink);border-bottom:2px solid var(--ink);padding:20px 20px 22px}
+.cell .k{display:block;margin-bottom:12px}
+.cell h5{font:400 26px/1 var(--display);margin:0 0 10px;text-transform:uppercase}
+.cell p{margin:0;font-size:16px;line-height:1.55;color:var(--soft)}
+.cell ul{margin:0;padding:0 0 0 18px;font-size:16px;color:var(--soft)}
+table{width:100%;border-collapse:collapse;margin:20px 0 32px;background:#fff;border:2px solid var(--ink);font-size:16px}
+th{font:700 11px/1.3 var(--mono);letter-spacing:.1em;text-transform:uppercase;text-align:left;padding:12px 14px;background:var(--ink);color:#fff}
+td{padding:12px 14px;border-top:1px solid var(--line);vertical-align:top;color:var(--soft)}
+td:first-child{color:var(--ink);font-weight:600}
+.tw{overflow-x:auto}
+.note{border-left:4px solid var(--ink);background:#fff;padding:14px 18px;margin:24px 0 30px;font-size:16.5px;color:var(--soft);max-width:66ch}
+.note b{font:700 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:8px}
+
+/* bots */
+.how{display:flex;flex-wrap:wrap;border:2px solid var(--ink);background:#fff;margin:6px 0 28px}
+.how div{flex:1 1 160px;padding:14px 16px;border-right:2px solid var(--ink);font-size:15px;line-height:1.4;color:var(--soft)}
+.how div:last-child{border-right:0}
+.how b{display:block;font:400 26px/1 var(--display);color:var(--ink);margin-bottom:4px}
+.bots{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.bot{all:unset;box-sizing:border-box;display:flex;flex-direction:column;cursor:pointer;border:2px solid var(--ink);background:#fff;padding:18px 18px 16px;min-height:170px;transition:transform 160ms var(--ease),box-shadow 160ms var(--ease)}
+.bot:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
+.bot:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
+.bot:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.bot .top{display:flex;justify-content:space-between;font:500 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.bot b{font:400 34px/1 var(--display);text-transform:uppercase;margin:18px 0 8px}
+.bot span.s{font-size:16px;line-height:1.45;color:var(--soft)}
+.bot .go{margin-top:auto;padding-top:14px;font:500 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+
+/* team */
+.tree{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0 30px}
+.lead-bot{border:2px solid var(--ink);background:#fff}
+.lead-bot .h{background:var(--ink);color:#fff;padding:12px 14px}
+.lead-bot .h b{display:block;font:400 30px/1 var(--display);color:#fff;text-transform:uppercase}
+.lead-bot .h span{font:500 10.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:#bbb}
+.lead-bot ul{list-style:none;margin:0;padding:6px 14px 10px}
+.lead-bot li{font-size:15px;padding:7px 0;border-bottom:1px dashed var(--line);color:var(--soft)}
+.lead-bot li:last-child{border-bottom:0}
+.you{display:flex;justify-content:center;margin-top:24px}
+.you div{border:2px solid var(--ink);background:var(--ink);color:#fff;font:400 26px/1 var(--display);padding:10px 22px;text-transform:uppercase}
+
+/* sources */
+.srcs a{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:16px;align-items:baseline;padding:16px 0;border-bottom:1px solid var(--line);text-decoration:none}
+.srcs a:hover b{text-decoration:underline}
+.srcs .i{font:400 28px/1 var(--display)}
+.srcs b{font-weight:600}
+.srcs small{display:block;font:400 12px/1.5 var(--mono);color:var(--mute);margin-top:4px}
+.srcs .arr{font:500 12px var(--mono);color:var(--gold)}
+footer{padding:40px 0 60px;font:400 12px/1.6 var(--mono);color:var(--mute)}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+/* dialog */
+dialog{border:2px solid var(--ink);padding:0;width:min(880px,calc(100vw - 32px));max-height:calc(100dvh - 48px);background:#fff;color:var(--ink);box-shadow:10px 10px 0 var(--ink);overflow:hidden}
+dialog::backdrop{background:rgba(0,0,0,.6)}
+dialog[open]{display:flex;flex-direction:column;animation:pop 220ms var(--ease)}
+@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.985)}to{opacity:1;transform:none}}
+.dh{display:flex;align-items:center;gap:10px;border-bottom:2px solid var(--ink);padding:10px 10px 10px 16px}
+.dh .k{margin-right:auto;color:var(--ink)}
+.dbody{overflow:auto;padding:26px 26px 30px}
+.dbody h2{font:400 54px/.9 var(--display);margin:10px 0 12px;text-transform:uppercase}
+.dbody .desc{font-size:19px;color:var(--soft);margin:0 0 22px;max-width:60ch}
+.chips{display:grid;grid-template-columns:repeat(4,1fr);border-top:2px solid var(--ink);border-left:2px solid var(--ink);margin-bottom:24px}
+.chip{border-right:2px solid var(--ink);border-bottom:2px solid var(--ink);padding:10px 12px;font-size:14px;line-height:1.4;color:var(--soft)}
+.chip b{display:block;font:700 10.5px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+.dbody pre{margin:0;border:2px solid var(--ink);background:var(--wash);padding:18px;font:400 13px/1.7 var(--mono);white-space:pre-wrap;word-break:break-word}
+.dbody pre .t{font-weight:700}
+.dbody pre .p,.fig pre .p{background:var(--ink);color:#fff;padding:0 3px}
+
+@media (max-width:1020px){
+  nav.top{display:none;position:absolute;top:60px;left:0;right:0;flex-direction:column;background:#fff;border-bottom:2px solid var(--ink);padding:10px 20px 16px}
+  nav.top.open{display:flex}
+  nav.top a{padding:12px 4px;border:0;border-bottom:1px solid var(--line)}
+  .btn.menu{display:inline-flex}
+  .toc-grid{grid-template-columns:repeat(2,1fr)}
+  .sec{grid-template-columns:minmax(0,1fr);gap:28px;padding:72px 0}
+  .side{position:static}
+  .side .n{font-size:72px}
+  .tree{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:640px){
+  body{font-size:17px}
+  .wrap{padding:0 18px}
+  .hero{padding:56px 0 52px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .stats div:nth-child(2){border-right:0}
+  .stats div:nth-child(-n+2){border-bottom:2px solid var(--ink)}
+  .toc-grid,.g2,.g3,.bots,.tree{grid-template-columns:1fr}
+  .toc-grid a{min-height:0}
+  .step{grid-template-columns:48px minmax(0,1fr);gap:12px}
+  .step .no{font-size:36px}
+  .chips{grid-template-columns:repeat(2,1fr)}
+  .fig pre{font-size:12.5px;padding:14px}
+  .dbody{padding:20px 18px}
+  .dbody h2{font-size:42px}
+  .srcs a{grid-template-columns:34px minmax(0,1fr)}
+  .srcs .arr{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="#top"><i class="wing"><svg viewBox="0 0 28 28"><path d="M6 20c3-3 7-7 11-6s8 4 10 6"/><path d="M8 16c3-3 6-5 10-4s7 4 9 5"/><path d="M10 12c2-2 5-3 8-2s6 4 7 5"/></svg></i>Hermes Agent Field Guide</a>
+    <nav class="top" id="nav">
+      <a href="#basics">Basics</a>
+      <a href="#start">Start</a>
+      <a href="#how">How it works</a>
+      <a href="#brain">Second brain</a>
+      <a href="#system">System</a>
+      <a href="#team">Team</a>
+      <a href="#bots">10 bots</a>
+      <a href="#sources">Sources</a>
+    </nav>
+    <button class="btn sm menu" id="menu" aria-expanded="false" aria-controls="nav">Menu</button>
+  </div>
+  <div class="prog" id="prog"></div>
+</header>
+
+<main id="top">
+
+<section class="hero">
+  <div class="wrap">
+    <div class="k">A field guide / 6 features / official docs</div>
+    <h1>Hermes Agent<br><span>Guide</span></h1>
+    <p class="lead">How to use Hermes Agent — the open-source AI agent by Nous Research. Setup, persistent memory, autonomous skills, scheduled automation, and ten ready bots you can run today.</p>
+    <div class="cta">
+      <a class="btn solid" href="#start">Start here</a>
+      <a class="btn" href="#bots">Get the 10 prompts</a>
+    </div>
+    <div class="stats">
+      <div><b>06</b><span>Setup steps</span></div>
+      <div><b>10</b><span>Ready prompts</span></div>
+      <div><b>14</b><span>Bot team model</span></div>
+      <div><b>16</b><span>Launch checks</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="toc">
+  <div class="wrap">
+    <div class="toc-h">
+      <div><div class="k">Contents</div><h2>The path</h2></div>
+      <div class="k">Read in order or jump in</div>
+    </div>
+    <div class="toc-grid">
+      <a href="#basics"><span class="k">Part 01</span><b>Basics</b><p>What an agent is and why it is not a chat.</p></a>
+      <a href="#start"><span class="k">Part 02</span><b>Get started</b><p>Install, set up, create your first bot.</p></a>
+      <a href="#how"><span class="k">Part 03</span><b>How it works</b><p>Sandboxes, memory, skills, routines, groups.</p></a>
+      <a href="#brain"><span class="k">Part 04</span><b>Second brain</b><p>Turn your notes into finished work.</p></a>
+      <a href="#system"><span class="k">Part 05</span><b>Run a system</b><p>Harness, loop, graph, autonomy ladder.</p></a>
+      <a href="#team"><span class="k">Part 06</span><b>A 14 bot team</b><p>One person, four leads, ten helpers.</p></a>
+      <a href="#bots"><span class="k">Part 07</span><b>10 ready bots</b><p>Copy a prompt, fill the gaps, send.</p></a>
+      <a href="#rules"><span class="k">Part 08</span><b>Write your own</b><p>The rules every good agent prompt shares.</p></a>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+
+<!-- 01 -->
+<section class="sec" id="basics">
+  <div class="side"><div class="n">01</div><h2>Basics</h2><div class="src">Sources: Hermes Agent docs, Nous Research</div></div>
+  <div class="body">
+    <p class="intro">A chat gives you an answer. An agent gives you a finished job.</p>
+    <p>Hermes Agent gives you agents you keep. Each one has a name, a job, and persistent memory that grows over time. They run in isolated sandboxes — local, Docker, SSH, Singularity, or Modal — with a browser, files, and a terminal, so the work lands in your real tools. Talk to it from Telegram, Discord, Slack, WhatsApp, Signal, Email, or CLI.</p>
+    <div class="fig">
+      <div class="fig-h"><span>Fig_01 / chat vs agent</span><span class="t">adapted from docs</span></div>
+<pre>CHAT   request -> response -> session ends
+
+AGENT  goal -> inspect -> act -> verify -> continue -> deliver</pre>
+    </div>
+    <h4>What a bot can do</h4>
+    <ul class="list">
+      <li>Keep a browser open and use any website, even ones with no API.</li>
+      <li>Create files, run commands, and use connected apps via the gateway.</li>
+      <li>Keep working while your laptop is closed on a cloud VPS or serverless.</li>
+      <li>Run jobs on a schedule or when something happens (cron + triggers).</li>
+      <li>Spawn subagents and hand work to them in parallel.</li>
+      <li>Ask you before anything you cannot undo.</li>
+    </ul>
+    <p>You talk to it by typing, dictating, or voice chat. On X, message <a href="https://x.com/nousresearch" target="_blank" rel="noopener">@nousresearch</a>.</p>
+    <div class="note"><b>Key idea</b>The output is not advice. It is the pulled report, the sorted folder, the scheduled briefing, or the saved skill.</div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section class="sec" id="start">
+  <div class="side"><div class="n">02</div><h2>Get started</h2><div class="src">Source: hermes-agent.nousresearch.com/docs</div></div>
+  <div class="body">
+    <h3>Six steps</h3>
+    <div class="steps">
+      <div class="step"><div class="no">01</div><div><h5>Download or install</h5><p>Get Hermes Desktop for macOS or Windows from <a href="https://hermes-agent.nousresearch.com" target="_blank" rel="noopener">hermes-agent.nousresearch.com</a>, or install via terminal on any Linux distro:</p></div></div>
+      <div class="step"><div class="no">02</div><div><h5>Run setup</h5><p>After installing, run <span class="kbd">hermes setup --portal</span>. One OAuth flow connects your model plus all four Tool Gateway tools: web search, image generation, TTS, and browser automation. You can also connect OpenAI, OpenRouter, or any OpenAI-compatible endpoint.</p></div></div>
+      <div class="step"><div class="no">03</div><div><h5>Connect a surface</h5><p>Connect Telegram, Discord, Slack, WhatsApp, Signal, or email from the messaging gateway settings. Your first bot, named Hermes, is made for you.</p></div></div>
+      <div class="step"><div class="no">04</div><div><h5>Give it one job</h5><p>Put its main job in the first message and ask it to remember. Add more bots with <span class="kbd">New &gt; Create new Bot</span>. Focused bots beat one bot that does everything.</p></div></div>
+      <div class="step"><div class="no">05</div><div><h5>Connect your tools</h5><p>When it hits a login, choose <b>Take over</b>, sign in yourself, then choose <b>I'm done</b>. The bot never sees your password. You can also add apps from <b>Connect apps</b>.</p></div></div>
+      <div class="step"><div class="no">06</div><div><h5>Review, then save</h5><p>Ask for fixes. Say what to keep for next time. When it works every time, ask it to save a skill or a routine.</p></div></div>
+    </div>
+
+    <h3>A good request</h3>
+    <div class="tw"><table>
+      <tr><th>Part</th><th>Ask yourself</th></tr>
+      <tr><td>Outcome</td><td>What should be finished?</td></tr>
+      <tr><td>Sources</td><td>Which apps, sites, files or chats matter?</td></tr>
+      <tr><td>Limits</td><td>What must it avoid, or ask first?</td></tr>
+      <tr><td>Deliverable</td><td>What should it give back?</td></tr>
+      <tr><td>Review point</td><td>When should it stop for you?</td></tr>
+    </table></div>
+    <div class="fig wrap-pre" data-copy>
+      <div class="fig-h"><span>Prompt / first bot job</span><button class="btn sm cp">Copy</button></div>
+<pre>Your job is product performance. Investigate product-performance questions with our observability tools. Preserve links and screenshots, separate evidence from hypotheses, and lead with the highest-impact issue. Never change production settings. Remember this for future work.</pre>
+    </div>
+    <div class="fig wrap-pre" data-copy>
+      <div class="fig-h"><span>Prompt / five minute first test</span><button class="btn sm cp">Copy</button></div>
+<pre>Summarize this document in five bullets. List every date, decision, and open question in a separate section. Cite the page or section for each item. Do not change the source file.</pre>
+    </div>
+
+    <h3>Tag @bot on X</h3>
+    <p>Reply to any post with a task. Your main bot gets the post, the post you replied to, and any quoted posts. The work stays in the app. @bot only posts a short reply.</p>
+    <div class="fig wrap-pre" data-copy>
+      <div class="fig-h"><span>Example reply</span><button class="btn sm cp">Copy</button></div>
+<pre>@bot summarize this thread and send the key points to my Discord</pre>
+    </div>
+    <h4>You need</h4>
+    <ul class="list">
+      <li>Your X account connected to Nous Portal: <span class="kbd">Settings &gt; Account &gt; Connect</span>.</li>
+      <li>Hermes Agent access on that same account.</li>
+      <li>At least one bot of your own. Shared bots cannot take tags.</li>
+    </ul>
+    <div class="tw"><table>
+      <tr><th>@bot replies</th><th>Meaning</th></tr>
+      <tr><td>Sent to your Hermes</td><td>It worked. Open the app to follow the job.</td></tr>
+      <tr><td>Sign up for Hermes</td><td>No account is linked to this X account.</td></tr>
+      <tr><td>Hermes is not set up</td><td>Accounts are linked but no bot yet.</td></tr>
+      <tr><td>No reply</td><td>The request did not arrive. Check region and setup.</td></tr>
+    </table></div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section class="sec" id="how">
+  <div class="side"><div class="n">03</div><h2>How it works</h2><div class="src">Source: Hermes Agent docs</div></div>
+  <div class="body">
+    <p class="intro">Six parts do most of the work.</p>
+    <div class="grid g2">
+      <div class="cell"><span class="k">A / Sandboxes</span><h5>Sandboxed execution</h5><p>Hermes runs code in isolated backends: local, Docker, SSH, Singularity, and Modal. Container hardening and namespace isolation keep each run separate. Your production systems are never touched.</p></div>
+      <div class="cell"><span class="k">B / Memory</span><h5>Persistent memory</h5><p>A bot keeps its role, your preferences, and past summaries across sessions. Memory is stored on disk, not in the conversation. For live decisions, ask it to check the source, not its memory.</p></div>
+      <div class="cell"><span class="k">C / Skills</span><h5>Auto skills</h5><p>A saved method for one task. Hermes creates skills from experience — show it a browser flow once and it writes the skill. Skills are portable, shareable, and community-contributed via the Skills Hub.</p></div>
+      <div class="cell"><span class="k">D / Routines</span><h5>Scheduling</h5><p>When a skill runs. On a schedule (cron) or when an event happens (trigger). They run while your laptop is closed on a cloud VPS or serverless.</p></div>
+      <div class="cell"><span class="k">E / Groups</span><h5>Group chats</h5><p>Put 2 to 6 bots in one conversation. Bots can message each other and pass work on. The chief routes work, asks you only for judgment.</p></div>
+      <div class="cell"><span class="k">F / Approvals</span><h5>Approvals</h5><p>Risky actions show a card: <b>Allow once</b>, <b>Always allow</b>, or <b>Deny</b>. Cards from routines expire after about 10 minutes. The approval line is drawn by "can it be undone."</p></div>
+    </div>
+    <div class="fig">
+      <div class="fig-h"><span>Fig_02 / the sandbox model</span><span class="t">Hermes docs</span></div>
+<pre>SANDBOX
+  |-> local backend
+  |-> Docker containers
+  |-> SSH to remote hosts
+  |-> Singularity isolation
+  |-> Modal serverless
+  |-> shared browser sessions
+  |-> shared files
+  |-> app logins per gateway
+
+NOT
+  |-> separate secrets per bot
+  |-> separate trust zones per bot</pre>
+    </div>
+
+    <h3>Make a routine</h3>
+    <p>Ask the bot that owns the job. Before you turn it on, confirm six things.</p>
+    <div class="grid g3">
+      <div class="cell"><span class="k">01</span><p>Which bot owns it</p></div>
+      <div class="cell"><span class="k">02</span><p>Schedule and time zone</p></div>
+      <div class="cell"><span class="k">03</span><p>Input source</p></div>
+      <div class="cell"><span class="k">04</span><p>Expected result</p></div>
+      <div class="cell"><span class="k">05</span><p>What needs approval</p></div>
+      <div class="cell"><span class="k">06</span><p>What to do if a source is missing</p></div>
+    </div>
+    <div class="fig wrap-pre" data-copy>
+      <div class="fig-h"><span>Prompt / routine</span><button class="btn sm cp">Copy</button></div>
+<pre>Every weekday at 8:00 AM, run the Daily customer-risk skill against the current account list. Post a linked watch list in this conversation. Do not contact customers. If the source data is unavailable, report the failure instead of using old data.</pre>
+    </div>
+    <p>Use <b>Test run</b> with safe inputs before you turn it on.</p>
+  </div>
+</section>
+
+<!-- 04 -->
+<section class="sec" id="brain">
+  <div class="side"><div class="n">04</div><h2>Build a second brain</h2><div class="src">Source: Hermes Agent docs, "Memory System"</div></div>
+  <div class="body">
+    <p class="intro">Give a bot your notes, a few samples of your writing, and one folder. Then ask for real work: a client reply, a plan, or a morning briefing.</p>
+    <p>Most second brain setups live on a laptop and stop when it closes. Hermes Agent runs on a cloud computer with persistent memory, so it keeps going and remembers across sessions.</p>
+
+    <h3><em>01</em> Give it a job</h3>
+    <p>Pick one task you do often and can judge yourself. A reply to a project update is a good first one.</p>
+    <ol class="list">
+      <li>Go to <span class="kbd">New &gt; Create new Bot</span>. Open <b>Edit Profile</b> and name it <b>Brain</b>.</li>
+      <li>Paste the description from the Memory Keeper prompt below.</li>
+      <li>Pick about 20 messages you wrote: normal replies, project updates, requests, corrections.</li>
+      <li>Remove anything private. Every bot on your account can see shared files.</li>
+      <li>Attach them with a note naming one project, then paste the setup prompt.</li>
+      <li>Ask: "Read these and learn my writing voice. Confirm when you're ready."</li>
+    </ol>
+    <div class="fig wrap-pre" data-copy>
+      <div class="fig-h"><span>Prompt / memory setup</span><button class="btn sm cp">Copy</button></div>
+<pre>Your job is my second brain. Everything I read, save or get sent goes to you. You read it in full, connect it on substance, and surface it when it matters. You remember and you prompt me. You never act on my behalf.
+
+Create /workspace/brain with raw/, people/, projects/, and out/.
+Create INDEX.md, log.md, me.md, voice.md, attention.md, and rules.md.
+
+Preserve the supplied messages in raw/ with their available dates and authors.
+Write me.md using only supported facts about my work, current goals, collaborators, and commitments. Mark uncertain details as questions.
+Write voice.md with up to 10 specific writing rules. Support each rule with a short line I actually wrote.
+Leave unsupported details blank.
+
+INDEX.md should map each file to its purpose. Add a dated record of this setup to log.md.
+Show me me.md and voice.md for correction before using them in a draft.</pre>
+    </div>
+
+    <h3><em>02</em> Make every fact traceable</h3>
+    <div class="fig">
+      <div class="fig-h"><span>Fig_03 / folder map</span><span class="t">/workspace/brain</span></div>
+<pre>/workspace/brain/
+  raw/          Original messages, notes, and exports
+  people/       Working context about collaborators
+  projects/     Project summaries and decisions
+  out/          Drafts, plans, and briefs to review
+  me.md         Confirmed background and goals
+  voice.md      Writing guidance with examples
+  attention.md  Current priorities and next actions
+  rules.md      Approved workflow corrections
+  INDEX.md      File map
+  log.md        Dated record of changes</pre>
+    </div>
+    <div class="fig">
+      <div class="fig-h"><span>Fig_04 / a traceable note</span><span class="t">example</span></div>
+<pre>Project:        Website launch
+Source:         raw/2026-10-21-client-update.txt
+Observed:       The client requested a revised opening section.
+Status checked: 2026-10-21, 16:20 Europe/London
+Open question:  Who approves the final copy?</pre>
+    </div>
+    <ul class="list">
+      <li>Put a source link and a last checked date next to every important claim.</li>
+      <li>Keep originals untouched. Update the summary that points to them.</li>
+      <li>Recheck dates, meeting times, payments and owners each time.</li>
+      <li>If a source will not open, show the gap: "The note says Friday; the latest thread could not be opened."</li>
+      <li>If two sources disagree, keep both and flag it.</li>
+    </ul>
+
+    <h3><em>03</em> Turn one chat into finished work</h3>
+
+    <p>Do this before you connect an inbox or add schedules. Attach a real project chat and your rough notes.</p>
+    <div class="fig wrap-pre" data-copy>
+      <div class="fig-h"><span>Prompt / thread to reply</span><button class="btn sm cp">Copy</button></div>
+<pre>Use the attached conversation to prepare my next reply.
+
+Read voice.md, rules.md, and the relevant project file first.
+Preserve the new source material in raw/ and update the project summary.
+
+Return:
+1. The other person's request in one sentence.
+2. Confirmed commitments, with a source for each.
+3. Missing information that affects the reply.
+4. A concise reply in my voice, saved in out/.
+
+Use current source material for dates, prices, and status.
+If a commitment needs my decision, leave it as a question outside the draft.
+Show the draft here and leave sending to me.</pre>
+    </div>
+    <h4>Check four things</h4>
+    <ul class="list">
+      <li>Did it keep who said what?</li>
+      <li>Does the draft answer the real request?</li>
+      <li>Are ideas kept apart from promises you already made?</li>
+      <li>Does it follow your writing rules?</li>
+    </ul>
+    <p>Fix the draft until you would send it. Then save the method as a skill.</p>
+    <div class="fig wrap-pre" data-copy>
+      <div class="fig-h"><span>Prompt / save as skill</span><button class="btn sm cp">Copy</button></div>
+<pre>Save this reviewed workflow as a private skill called "Thread to Reply".
+Include the required inputs, relevant brain files, source checks, output location, and approval boundary.
+Add the checks we used to review this draft.
+For an incomplete thread, ask for missing context before proposing a commitment.
+Show me the saved instructions.</pre>
+    </div>
+
+    <h3><em>04</em> Control what comes in</h3>
+    <p>Create a Telegram group called <b>Brain</b> and add it to a few channels. Open <b>Connect apps</b>, add Telegram, then type <code>@</code> in the chat to pick it. Start with five messages so you can check each one.</p>
+    <div class="fig wrap-pre" data-copy>
+      <div class="fig-h"><span>Prompt / gateway intake</span><button class="btn sm cp">Copy</button></div>
+<pre>Run one intake pass for up to five Telegram messages in the Brain group.
+
+For each message:
+- Record its message ID, sender, timestamp, subject, and source link.
+- Check whether that ID was already processed.
+- Save the original content in raw/ using a stable filename.
+- Update the relevant person or project file with a linked summary.
+- Put ambiguous items in a review list.
+
+Record processed IDs in intake-state.md only after the source and summary are saved.
+Update INDEX.md and log.md.
+Return the saved paths, skipped duplicates, and unresolved items.
+Keep mailbox contents unchanged.</pre>
+    </div>
+    <p>Run it again on the same messages. It should skip them and make no copies. You can also share photos, files, links, or text into a chat. For links, save the address, the date, and why you kept it.</p>
+
+    <h3><em>05</em> Start each morning with decisions</h3>
+    <p>Only after intake and drafts pass review. Change the times to yours.</p>
+    <div class="tw"><table>
+      <tr><th>When</th><th>Job</th><th>Result</th></tr>
+      <tr><td>23:00 daily</td><td>File new messages</td><td>Linked summaries and an intake log</td></tr>
+      <tr><td>07:30 weekdays</td><td>Morning brief</td><td>Current facts, drafts and decisions</td></tr>
+      <tr><td>Sunday 18:00</td><td>Review the brain</td><td>Conflicts, stale notes, proposed fixes</td></tr>
+      <tr><td>17:00 weekdays</td><td>Optional: update attention.md</td><td>Your goals kept apart from guesses</td></tr>
+    </table></div>
+
+  </div>
+</section>
+
+<!-- 05 -->
+<section class="sec" id="system">
+  <div class="side"><div class="n">05</div><h2>Run a system</h2><div class="src">Source: Hermes Agent docs, @0xwhrrari</div></div>
+  <div class="body">
+    <p class="intro">A single bot is a loop. A system is a graph of bots that you set once and trust.</p>
+
+    <h3><em>A</em> Harness</h3>
+    <p>The approval line is drawn by "can it be undone." Draw it before you hand over.</p>
+    <div class="note"><b>Key idea</b>Sign in yourself on "Take over." The bot never stores your password. Treat shared sessions as account-wide access, not isolation between bots.</div>
+    <ul class="list">
+      <li><b>Isolation is a sandbox, not a secret vault.</b> Hermes isolates execution backends, not credentials per bot. A login you paste into one bot's chat is available to every bot on the same account.</li>
+      <li><b>Need real separation?</b> Use separate accounts. A polite instruction is not a security control.</li>
+    </ul>
+    <h4>Draw the approval line by "can it be undone"</h4>
+    <div class="grid g2">
+      <div class="cell"><span class="k">Finish without asking</span><p>Research, summarize, sort, draft, organize, prepare, stage, simulate.</p></div>
+      <div class="cell"><span class="k">Stop for approval</span><p>Send, publish, buy, move money, delete or overwrite, change access, change production, accept legal terms.</p></div>
+    </div>
+    <p>A good run finishes every step that can be undone and stops cleanly at the rest. It should not come back at 10 percent done.</p>
+    <div class="fig">
+      <div class="fig-h"><span>Fig_06 / a good receipt</span><span class="t">json</span></div>
+<pre>{
+  "completed": ["researched 42 accounts", "ranked 10 prospects", "drafted 10 messages"],
+  "sent": 0,
+  "published": 0,
+  "waiting_for_approval": ["send outreach batch", "update production CRM"]
+}</pre>
+    </div>
+
+    <h3><em>B</em> Loop</h3>
+    <p>"Keep trying until it works" is not a loop. It is an open budget with no clear goal.</p>
+    <div class="fig">
+      <div class="fig-h"><span>Fig_07 / five parts of a loop</span><span class="t">adapted from Hermes docs</span></div>
+<pre>TARGET      what success means
+EVIDENCE    how the result is checked
+FEEDBACK    the exact gap
+BOUND       how many retries are allowed
+ESCALATION  what happens when retries fail</pre>
+    </div>
+    <div class="fig">
+      <div class="fig-h"><span>Fig_08 / retry rules</span><span class="t">example</span></div>
+<pre>retry twice for a passing tool failure
+repair once for a failed format check
+ask the human when evidence conflicts
+stop when the cost or time budget is reached</pre>
+    </div>
+    <ul class="list">
+      <li><b>Teach, then save.</b> Run it once with the bot watching. Fix edge cases. Save the routine only when the result is right.</li>
+      <li><b>Best first routine:</b> weekly or more, spans two or more tools, stable, easy to check, and can be undone until the last step.</li>
+      <li><b>Schedule</b> makes it on time. <b>Trigger</b> makes it react. Both should call the same tested routine.</li>
+      <li><b>Check apart from building.</b> Code: tests and a clean diff. Research: sources and claim to evidence. Ops: counts before and after.</li>
+    </ul>
+    <div class="fig">
+      <div class="fig-h"><span>Fig_09 / a routine spec</span><span class="t">yaml</span></div>
+<pre>routine: weekly_competitor_scan
+trigger:
+  type: schedule
+  value: monday 06:00
+output: /reports/competitors/YYYY-MM-DD.md
+verify:
+  - source links open
+  - changes are newer than previous report
+  - every claim maps to evidence
+approval:
+  - publishing requires human approval</pre>
+    </div>
+
+    <h3><em>C</em> Graph</h3>
+    <p>One bot is a loop. Two bots is a chain. A team of bots is a graph. A chief bot takes your goal, splits it, routes it, and tracks it. Specialists own their lane.</p>
+    <ul class="list">
+      <li><b>Hire roles, not personalities.</b> Clear owners make failures easy to trace.</li>
+      <li><b>Pass ownership, not transcripts.</b> Send a small handoff packet, not the whole chat.</li>
+      <li><b>Run in parallel only what is independent.</b> The goal is less waiting, not more bots.</li>
+      <li><b>Give the group a goal, not a task list.</b> If you still copy files between bots, it is just chat windows.</li>
+    </ul>
+    <div class="fig">
+      <div class="fig-h"><span>Fig_10 / handoff packet</span><span class="t">json</span></div>
+<pre>{
+  "from": "researcher",
+  "to": "writer",
+  "objective": "draft the launch analysis",
+  "artifacts": ["evidence-pack.json", "outline.md"],
+  "decisions": ["focus on persistent agents"],
+  "constraints": ["no unverified performance claims"],
+  "open_questions": ["confirm enterprise availability"],
+  "next_gate": "fact_check"
+}</pre>
+    </div>
+    <div class="fig">
+      <div class="fig-h"><span>Fig_11 / a one person company</span><span class="t">adapted from @0xwhrrari</span></div>
+<pre>YOU
+ |
+ v
+CHIEF OF STAFF
+ |-> MEMORY KEEPER     output: organized notes + knowledge base
+ |-> RESEARCHER        output: cited evidence pack
+ |-> CONTENT BOT       output: draft + asset brief
+ |-> REVIEW BOT        output: fact, style, format report
+ |-> DISTRIBUTION BOT  output: staged posts + schedule
+ |
+ v
+YOU APPROVE PUBLICATION</pre>
+    </div>
+    <div class="fig">
+      <div class="fig-h"><span>Fig_12 / role contract</span><span class="t">yaml</span></div>
+<pre>name: Web Researcher
+owns: source collection and evidence packs
+inputs:   [topic brief, approved source list, previous archive]
+outputs:  [cited findings, contradiction log, open questions]
+may:      [browse public sources, save files, draft summaries]
+must_ask_before:
+  - messaging a person
+  - purchasing access
+  - publishing anything
+done_when:
+  - every factual claim has evidence
+  - conflicts are surfaced
+  - unresolved gaps are explicit</pre>
+    </div>
+
+    <h3><em>D</em> The ten step order</h3>
+    <p>Move up only with proof. Move down when a routine gets worse.</p>
+    <div class="steps">
+      <div class="step"><div class="no">01</div><div><h5>Start with a real recurring job</h5><p>Something you already do, with a result that is easy to judge.</p></div></div>
+      <div class="step"><div class="no">02</div><div><h5>Define the role in one sentence</h5><p>If it needs six unrelated verbs, split it.</p></div></div>
+      <div class="step"><div class="no">03</div><div><h5>Define done first</h5><p>Write the checks before the run starts.</p></div></div>
+      <div class="step"><div class="no">04</div><div><h5>Connect only the tools it needs</h5><p>Add access when a real task is blocked, not before.</p></div></div>
+      <div class="step"><div class="no">05</div><div><h5>Show it once</h5><p>Walk the real path. Explain each choice. Fix the first output in the same chat.</p></div></div>
+      <div class="step"><div class="no">06</div><div><h5>Save it as a routine</h5><p>Inputs, output place, checks, schedule and approval line.</p></div></div>
+      <div class="step"><div class="no">07</div><div><h5>Add a checker before more freedom</h5><p>Run it several times against the same rubric.</p></div></div>
+      <div class="step"><div class="no">08</div><div><h5>Limit retries, plan escalation</h5><p>Cap by count, time and cost.</p></div></div>
+      <div class="step"><div class="no">09</div><div><h5>Add a specialist only at a bottleneck</h5><p>Split research from writing, or checking from building, when it gets noisy.</p></div></div>
+      <div class="step"><div class="no">10</div><div><h5>Audit every week</h5><p>Ask each bot for a receipt and spot check one result. Would you notice if this routine vanished? If not, delete it.</p></div></div>
+    </div>
+
+    <h3><em>E</em> The autonomy ladder</h3>
+    <p>Move up only with proof. Move down when a routine gets worse.</p>
+    <div class="fig">
+      <div class="fig-h"><span>Fig_13 / levels</span><span class="t">adapted from Hermes docs</span></div>
+<pre>LEVEL 0  OBSERVE                watches, changes nothing
+LEVEL 1  PREPARE                researches, drafts, stages work that can be undone
+LEVEL 2  EXECUTE WITH APPROVAL  does the job, stops before risky steps
+LEVEL 3  SCHEDULE OR TRIGGER    starts on its own, returns a receipt
+LEVEL 4  COORDINATE             a chief routes work, asks you only for judgment</pre>
+    </div>
+    <div class="fig">
+      <div class="fig-h"><span>Fig_14 / promotion gate</span><span class="t">yaml</span></div>
+<pre>promotion_gate:
+  minimum_clean_runs: 5
+  verification_pass_rate: 1.0
+  unresolved_side_effects: 0
+  rollback_tested: true
+  approval_policy_tested: true
+  receipt_complete: true</pre>
+    </div>
+
+    <h3><em>F</em> Three patterns to copy</h3>
+    <div class="grid g3">
+      <div class="cell"><span class="k">Pattern 1</span><h5>Night research</h5><p>Scout searches set sources. Checker drops weak claims. Cluster merges repeats. Brief writes the summary. You get one queue at breakfast.</p></div>
+      <div class="cell"><span class="k">Pattern 2</span><h5>Bug repair</h5><p>One bot reproduces the bug with steps, logs, and screenshots in a sandbox. Only then does the fixing bot get the case.</p></div>
+      <div class="cell"><span class="k">Pattern 3</span><h5>Content gate</h5><p>Idea, research, draft, fact check, assets, package. Nothing goes public without your yes.</p></div>
+    </div>
+
+    <h3><em>G</em> Mistakes that waste time</h3>
+    <ol class="list">
+      <li>One bot owns everything.</li>
+      <li>Tasks with no definition of done.</li>
+      <li>Every bot gets the full chat history.</li>
+      <li>Thinking the shared sandbox keeps bots apart.</li>
+      <li>A loop with no hard stop.</li>
+      <li>The builder checks its own work in the same context.</li>
+      <li>Everything waits for approval, so nothing is faster.</li>
+      <li>Nothing waits for approval, so it can spend, delete, or post as you.</li>
+      <li>Old routines are never deleted.</li>
+    </ol>
+
+    <h3><em>H</em> Launch checklist</h3>
+    <p>Ask these before you leave a bot running overnight. Several no answers mean it needs a better harness, not more freedom.</p>
+    <div class="fig">
+      <div class="fig-h"><span>Fig_15 / before overnight runs</span><button class="btn sm cp">Copy</button></div>
+<pre>[ ] Does the bot own one clear result
+[ ] Is done defined before the run begins
+[ ] Are inputs and output locations explicit
+[ ] Does it have only the tools required for the job
+[ ] Are secrets and shared sessions treated as account-wide access
+[ ] Are logins handed off to the human instead of pasted into chat
+[ ] Is durable state stored outside the conversation
+[ ] Does every important claim or change produce evidence
+[ ] Does every schedule or trigger call a tested routine
+[ ] Are retries bounded by count, time, and cost
+[ ] Are sending, publishing, purchases, deletion, permissions,
+    production changes, and legal terms behind approval
+[ ] Can another bot pick up the work from files and a handoff packet
+[ ] Does a bot group get one goal with clear owners
+[ ] Can the system resume after an interruption
+[ ] Can you explain what happened without asking the same bot
+[ ] Does the weekly audit remove weak routines</pre>
+    </div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section class="sec" id="team">
+  <div class="side"><div class="n">06</div><h2>A 14 bot team</h2><div class="src">Source: Hermes Agent docs, @akshay_pachaar</div></div>
+  <div class="body">
+    <p class="intro">You run 14 bots but talk to only 4. Each lead runs its own helpers.</p>
+    <div class="tree">
+      <div class="lead-bot"><div class="h"><span>Chief of Staff</span><b>Pam</b></div><ul><li>Memory Keeper</li><li>Newsletter Reader</li><li>Content Drafter</li><li>Data Analyst</li></ul></div>
+      <div class="lead-bot"><div class="h"><span>Research</span><b>Tyrion</b></div><ul><li>Web Researcher</li><li>System Watchdog</li></ul></div>
+      <div class="lead-bot"><div class="h"><span>Engineer</span><b>Gilfoyle</b></div><ul><li>Builder</li><li>Code Reviewer</li></ul></div>
+      <div class="lead-bot"><div class="h"><span>Creative</span><b>Rachel</b></div><ul><li>Social Assistant</li><li>Travel Planner</li></ul></div>
+    </div>
+    <div class="you">
+      <div>YOU</div>
+    </div>
+    <ul class="list">
+      <li>Give a goal to a lead. The lead splits it among helpers.</li>
+      <li>Name bots after characters you know. It makes each role easy to remember.</li>
+      <li>Leads and helpers map to the chief and specialists in Part 05.</li>
+    </ul>
+    <div class="fig">
+      <div class="fig-h"><span>Fig_16 / Akshay's chart</span><span class="t">adapted from the post</span></div>
+<pre>                     YOU
+                      |
+                      v
+              CHIEF OF STAFF
+              |-> MEMORY KEEPER    (Pam + 3 helpers)
+              |-> RESEARCH         (Tyrion + 1 helper)
+              |-> ENGINEER         (Gilfoyle + 1 helper)
+              |-> CREATIVE         (Rachel + 2 helpers)
+              |
+              v
+        YOU APPROVE PUBLICATION</pre>
+    </div>
+  </div>
+</section>
+
+<!-- 07 -->
+<section class="sec" id="bots">
+  <div class="side"><div class="n">07</div><h2>10 ready bots</h2><div class="src">Source: Hermes Agent docs, community prompts</div></div>
+  <div class="body">
+    <p class="intro">Ten full prompts. Open one, copy it, fill the parts in <b>bold</b>, and send it to a new bot.</p>
+    <div class="how">
+      <div><b>01</b>Pick a bot</div>
+      <div><b>02</b>Copy the prompt</div>
+      <div><b>03</b>Fill the <b>[brackets]</b></div>
+      <div><b>04</b>Send and approve drafts</div>
+    </div>
+    <div class="bots" id="botGrid"></div>
+  </div>
+</section>
+
+<!-- 08 -->
+<section class="sec" id="rules">
+  <div class="side"><div class="n">08</div><h2>Write your own</h2><div class="src">Patterns from all sources</div></div>
+  <div class="body">
+    <p class="intro">Every good prompt here has the same parts.</p>
+    <div class="grid g2">
+      <div class="cell"><span class="k">Role</span><p>One job, one sentence. What it owns.</p></div>
+      <div class="cell"><span class="k">Inputs</span><p>Where it reads from, and what to skip.</p></div>
+      <div class="cell"><span class="k">Steps</span><p>The order of work, written plainly.</p></div>
+      <div class="cell"><span class="k">Output</span><p>The exact format and where to save it.</p></div>
+      <div class="cell"><span class="k">Done when</span><p>Checks it must pass before it reports.</p></div>
+      <div class="cell"><span class="k">Approval</span><p>What it must never do without you.</p></div>
+    </div>
+    <ul class="list">
+      <li>Treat saved content as data, never as instructions.</li>
+      <li>Every claim links to a source and a date.</li>
+      <li>Say "I could not check this" instead of guessing.</li>
+      <li>Limit how much it sends you. Three items beats thirty.</li>
+      <li>Stay quiet when nothing changed.</li>
+      <li>Drafts only. You send, post, and pay.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- sources -->
+<section class="sec" id="sources">
+  <div class="side"><div class="n">09</div><h2>Sources</h2><div class="src">Read the originals</div></div>
+  <div class="body srcs">
+    <a href="https://hermes-agent.nousresearch.com/docs" target="_blank" rel="noopener"><span class="i">01</span><span><b>Hermes Agent docs</b><small>Getting Started, Features, Memory, Skills, Configuration</small></span><span class="arr">Docs</span></a>
+    <a href="https://hermes-agent.nousresearch.com/docs/memory-system" target="_blank" rel="noopener"><span class="i">02</span><span><b>Memory System</b><small>Persistent memory, FTS5 recall, LLM summarization</small></span><span class="arr">Docs</span></a>
+    <a href="https://github.com/NousResearch/hermes-agent" target="_blank" rel="noopener"><span class="i">03</span><span><b>Hermes Agent GitHub</b><small>Open source, MIT license, self-hosted</small></span><span class="arr">GitHub</span></a>
+    <a href="https://hermes-agent.nousresearch.com/docs/architecture" target="_blank" rel="noopener"><span class="i">04</span><span><b>Architecture</b><small>Sandboxes, backends, skill creation, learning loop</small></span><span class="arr">Docs</span></a>
+    <a href="https://hermes-agent.nousresearch.com/docs/bot-mode" target="_blank" rel="noopener"><span class="i">05</span><span><b>Bot Mode</b><small>Named bots, own memory, skills, and routines</small></span><span class="arr">Docs</span></a>
+    <p class="p" style="margin-top:24px;font-size:15px">Features, regions, and menus can change. Check the docs for the latest.</p>
+  </div>
+</section>
+
+</div>
+</main>
+
+<footer><div class="wrap"><span>Hermes Agent Field Guide</span><span>Built from Hermes Agent docs and community patterns</span></div></footer>
+
+<dialog id="dlg" aria-labelledby="dTitle">
+  <div class="dh"><span class="k" id="dFile"></span><button class="btn sm solid" id="copyBtn">Copy prompt</button><button class="btn sm" id="closeBtn" aria-label="Close">Close</button></div>
+  <div class="dbody">
+    <div class="k" id="dNum"></div>
+    <h2 id="dTitle"></h2>
+    <p class="desc" id="dDesc"></p>
+    <div class="chips" id="dSteps"></div>
+    <pre id="dPrompt"></pre>
+  </div>
+</dialog>
+
+<script src="prompts.js"></script>
+<script>
+const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const slug=s=>s.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+const toText=b=>"<prompt>\n\n"+b.prompt.map(([t,x])=>`<${t}> ${x} </${t}>`).join("\n\n")+"\n\n</prompt>";
+const toHtml=b=>{
+  const tag=t=>`<span class="t">${esc(t)}</span>`;
+  const body=b.prompt.map(([t,x])=>tag(`<${t}>`)+" "+esc(x).replace(/\[[^\]]+\]/g,m=>`<span class="p">${m}</span>`)+" "+tag(`</${t}>`)).join("\n\n");
+  return tag("<prompt>")+"\n\n"+body+"\n\n"+tag("</prompt>");
+};
+async function copy(t){
+  try{await navigator.clipboard.writeText(t)}catch{
+    const a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();document.execCommand("copy");a.remove();
+  }
+}
+
+const grid=document.getElementById("botGrid");
+grid.innerHTML=BOTS.map((b,i)=>`<button class="bot" data-i="${i}"><span class="top"><span>Bot ${b.n}</span><span>${b.steps.length} steps</span></span><b>${esc(b.name)}</b><span class="s">${esc(b.short)}</span><span class="go">Open prompt -></span></button>`).join("");
+grid.addEventListener("click",e=>{const c=e.target.closest(".bot");if(c)openBot(+c.dataset.i)});
+
+const dlg=document.getElementById("dlg"),copyBtn=document.getElementById("copyBtn");let cur=null;
+function openBot(i){
+  const b=BOTS[i];cur=b;
+  document.getElementById("dFile").textContent=`bot_${b.n} / ${slug(b.name)}.xml`;
+  document.getElementById("dNum").textContent="Bot "+b.n;
+  document.getElementById("dTitle").textContent=b.name;
+  document.getElementById("dDesc").textContent=b.desc;
+  document.getElementById("dSteps").innerHTML=b.steps.map(([t,s],k)=>`<div class="chip"><b>${String(k+1).padStart(2,"0")} ${esc(t)}</b>${esc(s)}</div>`).join("");
+  document.getElementById("dPrompt").innerHTML=toHtml(b);
+  copyBtn.textContent="Copy prompt";
+  if(!dlg.open)dlg.showModal();
+  dlg.querySelector(".dbody").scrollTop=0;
+  history.replaceState(null,"","#bot-"+b.n);
+}
+function closeDlg(){dlg.close()}
+dlg.addEventListener("close",()=>{if(location.hash.startsWith("#bot-"))history.replaceState(null,"","#bots")});
+document.getElementById("closeBtn").onclick=closeDlg;
+dlg.addEventListener("click",e=>{if(e.target===dlg)closeDlg()});
+copyBtn.onclick=async()=>{await copy(toText(cur));copyBtn.textContent="Copied";setTimeout(()=>copyBtn.textContent="Copy prompt",1600)};
+const m=location.hash.match(/^#bot-(\d+)$/);
+if(m){const i=BOTS.findIndex(b=>b.n===m[1]);if(i>=0)openBot(i)}
+
+document.querySelectorAll(".fig .cp").forEach(btn=>{
+  btn.onclick=async()=>{const pre=btn.closest(".fig").querySelector("pre");await copy(pre.textContent);btn.textContent="Copied";setTimeout(()=>btn.textContent="Copy",1600)};
+});
+
+const nav=document.getElementById("nav"),menu=document.getElementById("menu");
+menu.onclick=()=>{const o=nav.classList.toggle("open");menu.setAttribute("aria-expanded",o);menu.textContent=o?"Close":"Menu"};
+nav.addEventListener("click",e=>{if(e.target.tagName==="A"){nav.classList.remove("open");menu.setAttribute("aria-expanded",false);menu.textContent="Menu"}});
+
+const links=[...nav.querySelectorAll("a")],secs=links.map(a=>document.querySelector(a.getAttribute("href")));
+const prog=document.getElementById("prog");
+function onScroll(){
+  const h=document.documentElement;prog.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+" %";
+  let k=-1;secs.forEach((s,i)=>{if(s&&s.getBoundingClientRect().top<140)k=i});
+  links.forEach((a,i)=>a.classList.toggle("on",i===k));
+}
+addEventListener("scroll",onScroll,{passive:true});onScroll();
+</script>
+</body>
+</html>
