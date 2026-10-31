@@ -47,7 +47,8 @@ header{position:sticky;top:0;z-index:20;background:#fff;border-bottom:2px solid 
 .bar{display:flex;align-items:center;gap:24px;height:60px}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;font:700 13px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
 .brand i{display:grid;place-items:center;width:28px;height:28px;background:var(--ink);color:#fff;font:400 22px/1 var(--display);font-style:normal}
-.brand .wing{fill:none;stroke:#fff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.brand .wing{display:grid;place-items:center;fill:none;stroke:#fff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;overflow:hidden}
+.brand .wing img{display:block;height:18px;width:auto;max-width:18px;filter:brightness(0) invert(1)}
 nav.top{display:flex;gap:2px;margin-left:auto}
 nav.top a{font:500 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;text-decoration:none;padding:9px 10px;border:1px solid transparent}
 nav.top a:hover{border-color:var(--ink)}
@@ -256,7 +257,7 @@ dialog[open]{display:flex;flex-direction:column;animation:pop 220ms var(--ease)}
 <a class="skip" href="#top">Skip to content</a>
 <header>
   <div class="wrap bar">
-    <a class="brand" href="#top"><i class="wing"><svg viewBox="0 0 28 28"><path d="M6 20c3-3 7-7 11-6s8 4 10 6"/><path d="M8 16c3-3 6-5 10-4s7 4 9 5"/><path d="M10 12c2-2 5-3 8-2s6 4 7 5"/></svg></i>Hermes Agent Field Guide</a>
+    <a class="brand" href="#top"><i class="wing"><img src="assets/hermes-mark.svg" alt=""></i>Hermes Agent Field Guide</a>
     <nav class="top" id="nav">
       <a href="#basics">Basics</a>
       <a href="#start">Start</a>
