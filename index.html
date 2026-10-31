@@ -278,7 +278,7 @@ dialog[open]{display:flex;flex-direction:column;animation:pop 220ms var(--ease)}
 
 <section class="hero">
   <div class="wrap">
-    <div class="k">A field guide / 6 features / official docs</div>
+    <div class="k">A field guide / 8 parts / official docs</div>
     <h1>Hermes Agent<br><span>Guide</span></h1>
     <p class="lead">How to use Hermes Agent — the open-source AI agent by Nous Research. Setup, persistent memory, autonomous skills, scheduled automation, and ten ready bots you can run today.</p>
     <div class="cta">
@@ -286,9 +286,9 @@ dialog[open]{display:flex;flex-direction:column;animation:pop 220ms var(--ease)}
       <a class="btn" href="#bots">Get the 10 prompts</a>
     </div>
     <div class="stats">
-      <div><b>06</b><span>Setup steps</span></div>
+      <div><b>08</b><span>Parts</span></div>
       <div><b>10</b><span>Ready prompts</span></div>
-      <div><b>14</b><span>Bot team model</span></div>
+      <div><b>14</b><span>Bots in the team</span></div>
       <div><b>16</b><span>Launch checks</span></div>
     </div>
   </div>
@@ -331,7 +331,7 @@ AGENT  goal -> inspect -> act -> verify -> continue -> deliver</pre>
     <ul class="list">
       <li>Keep a browser open and use any website, even ones with no API.</li>
       <li>Create files, run commands, and use connected apps via the gateway.</li>
-      <li>Keep working while your laptop is closed on a cloud VPS or serverless.</li>
+      <li>Keep working while your laptop is closed, on a VPS or a machine that stays on.</li>
       <li>Run jobs on a schedule or when something happens (cron + triggers).</li>
       <li>Spawn subagents and hand work to them in parallel.</li>
       <li>Ask you before anything you cannot undo.</li>
@@ -349,9 +349,9 @@ AGENT  goal -> inspect -> act -> verify -> continue -> deliver</pre>
     <div class="steps">
       <div class="step"><div class="no">01</div><div><h5>Download or install</h5><p>Get Hermes Desktop for macOS or Windows from <a href="https://hermes-agent.nousresearch.com" target="_blank" rel="noopener">hermes-agent.nousresearch.com</a>, or install via terminal on any Linux distro:</p></div></div>
       <div class="step"><div class="no">02</div><div><h5>Run setup</h5><p>After installing, run <span class="kbd">hermes setup --portal</span>. One OAuth flow connects your model plus all four Tool Gateway tools: web search, image generation, TTS, and browser automation. You can also connect OpenAI, OpenRouter, or any OpenAI-compatible endpoint.</p></div></div>
-      <div class="step"><div class="no">03</div><div><h5>Connect a surface</h5><p>Connect Telegram, Discord, Slack, WhatsApp, Signal, or email from the messaging gateway settings. Your first bot, named Hermes, is made for you.</p></div></div>
-      <div class="step"><div class="no">04</div><div><h5>Give it one job</h5><p>Put its main job in the first message and ask it to remember. Add more bots with <span class="kbd">New &gt; Create new Bot</span>. Focused bots beat one bot that does everything.</p></div></div>
-      <div class="step"><div class="no">05</div><div><h5>Connect your tools</h5><p>When it hits a login, choose <b>Take over</b>, sign in yourself, then choose <b>I'm done</b>. The bot never sees your password. You can also add apps from <b>Connect apps</b>.</p></div></div>
+      <div class="step"><div class="no">03</div><div><h5>Connect a surface</h5><p>Run <span class="kbd">hermes gateway setup</span>, or open <b>Settings &gt; Connections</b> in the desktop app. Telegram, Discord, Slack, WhatsApp, Signal, Email, Teams. Your first bot, the default profile, is there already.</p></div></div>
+      <div class="step"><div class="no">04</div><div><h5>Give it one job</h5><p>Put its main job in the first message and ask it to remember. Open the <b>Bots</b> tab and hit <span class="kbd">New Agent</span> — name, title, one line of description. Focused bots beat one bot that does everything.</p></div></div>
+      <div class="step"><div class="no">05</div><div><h5>Hand over a login</h5><p>When it hits a login, 2FA prompt, CAPTCHA or payment step, it stops and tells you. Open the bot's <b>Screen</b>, click <b>Take over</b>, do the step yourself, then click <b>Hand back</b>. The bot never sees your password.</p></div></div>
       <div class="step"><div class="no">06</div><div><h5>Review, then save</h5><p>Ask for fixes. Say what to keep for next time. When it works every time, ask it to save a skill or a routine.</p></div></div>
     </div>
 
@@ -373,25 +373,28 @@ AGENT  goal -> inspect -> act -> verify -> continue -> deliver</pre>
 <pre>Summarize this document in five bullets. List every date, decision, and open question in a separate section. Cite the page or section for each item. Do not change the source file.</pre>
     </div>
 
-    <h3>Tag @bot on X</h3>
-    <p>Reply to any post with a task. Your main bot gets the post, the post you replied to, and any quoted posts. The work stays in the app. @bot only posts a short reply.</p>
-    <div class="fig wrap-pre" data-copy>
-      <div class="fig-h"><span>Example reply</span><button class="btn sm cp">Copy</button></div>
-<pre>@bot summarize this thread and send the key points to my Discord</pre>
-    </div>
-    <h4>You need</h4>
-    <ul class="list">
-      <li>Your X account connected to Nous Portal: <span class="kbd">Settings &gt; Account &gt; Connect</span>.</li>
-      <li>Hermes Agent access on that same account.</li>
-      <li>At least one bot of your own. Shared bots cannot take tags.</li>
-    </ul>
+    <h3>Talk to it from anywhere</h3>
+    <p>One gateway connects your bot to the messaging apps you already use. Same bot, same memory, same files — only the front door changes.</p>
     <div class="tw"><table>
-      <tr><th>@bot replies</th><th>Meaning</th></tr>
-      <tr><td>Sent to your Hermes</td><td>It worked. Open the app to follow the job.</td></tr>
-      <tr><td>Sign up for Hermes</td><td>No account is linked to this X account.</td></tr>
-      <tr><td>Hermes is not set up</td><td>Accounts are linked but no bot yet.</td></tr>
-      <tr><td>No reply</td><td>The request did not arrive. Check region and setup.</td></tr>
+      <tr><th>Surface</th><th>What it is good for</th></tr>
+      <tr><td>CLI / Desktop</td><td>The full view: tools, live transcript, approvals, subagents.</td></tr>
+      <tr><td>Telegram</td><td>Voice memos (auto-transcribed), files, group chats, scheduled results.</td></tr>
+      <tr><td>Discord, Slack, Teams</td><td>Channels your team already lives in.</td></tr>
+      <tr><td>WhatsApp, Signal, Email</td><td>Where you are, without opening anything new.</td></tr>
     </table></div>
+    <p>Connect a platform in one command:</p>
+    <div class="fig wrap-pre" data-copy>
+      <div class="fig-h"><span>Terminal / connect a messaging platform</span><button class="btn sm cp">Copy</button></div>
+<pre>hermes gateway setup</pre>
+    </div>
+    <h4>What each platform gives you</h4>
+    <ul class="list">
+      <li><b>Telegram</b> — <span class="kbd">/setprivacy</span> controls whether the bot reads every group message or only @mentions.</li>
+      <li><b>Discord</b> — needs the <b>Message Content Intent</b> switched on, or the bot stays silent in servers.</li>
+      <li><b>Slack</b> — subscribe to <span class="kbd">message.channels</span> to reach public channels.</li>
+      <li><b>Signal</b> — works, but cannot edit messages, so live tool progress is off there.</li>
+    </ul>
+
   </div>
 </section>
 
@@ -401,28 +404,32 @@ AGENT  goal -> inspect -> act -> verify -> continue -> deliver</pre>
   <div class="body">
     <p class="intro">Six parts do most of the work.</p>
     <div class="grid g2">
-      <div class="cell"><span class="k">A / Sandboxes</span><h5>Sandboxed execution</h5><p>Hermes runs code in isolated backends: local, Docker, SSH, Singularity, and Modal. Container hardening and namespace isolation keep each run separate. Your production systems are never touched.</p></div>
+      <div class="cell"><span class="k">A / Sandboxes</span><h5>Where the code runs</h5><p>Pick a backend: <b>local</b> (your machine, no isolation), <b>Docker</b> (namespaces and cap-drop), <b>SSH</b> (another host), or cloud sandboxes. Only container backends isolate a run — on <b>local</b> the agent runs as you, with your files and your network.</p></div>
       <div class="cell"><span class="k">B / Memory</span><h5>Persistent memory</h5><p>A bot keeps its role, your preferences, and past summaries across sessions. Memory is stored on disk, not in the conversation. For live decisions, ask it to check the source, not its memory.</p></div>
       <div class="cell"><span class="k">C / Skills</span><h5>Auto skills</h5><p>A saved method for one task. Hermes creates skills from experience — show it a browser flow once and it writes the skill. Skills are portable, shareable, and community-contributed via the Skills Hub.</p></div>
-      <div class="cell"><span class="k">D / Routines</span><h5>Scheduling</h5><p>When a skill runs. On a schedule (cron) or when an event happens (trigger). They run while your laptop is closed on a cloud VPS or serverless.</p></div>
-      <div class="cell"><span class="k">E / Groups</span><h5>Group chats</h5><p>Put 2 to 6 bots in one conversation. Bots can message each other and pass work on. The chief routes work, asks you only for judgment.</p></div>
-      <div class="cell"><span class="k">F / Approvals</span><h5>Approvals</h5><p>Risky actions show a card: <b>Allow once</b>, <b>Always allow</b>, or <b>Deny</b>. Cards from routines expire after about 10 minutes. The approval line is drawn by "can it be undone."</p></div>
+      <div class="cell"><span class="k">D / Routines</span><h5>Scheduling</h5><p>When a skill runs. On a schedule (cron) or when an event happens (trigger). Routines need a live gateway — a VPS, a home server, or a machine that stays on. They do not run on a laptop you closed.</p></div>
+      <div class="cell"><span class="k">E / Groups</span><h5>Group chats</h5><p>Put several bots in one conversation. Bots can message each other and pass work on. The chief routes work, asks you only for judgment.</p></div>
+      <div class="cell"><span class="k">F / Approvals</span><h5>Approvals</h5><p>Risky actions raise a card: <b>Allow once</b>, <b>Allow for session</b>, <b>Always allow</b>, or <b>Deny</b>. A card waits for <span class="kbd">approvals.timeout</span> — 300 seconds by default — then expires. The line is drawn by "can it be undone."</p></div>
     </div>
     <div class="fig">
       <div class="fig-h"><span>Fig_02 / the sandbox model</span><span class="t">Hermes docs</span></div>
-<pre>SANDBOX
-  |-> local backend
-  |-> Docker containers
-  |-> SSH to remote hosts
-  |-> Singularity isolation
-  |-> Modal serverless
-  |-> shared browser sessions
-  |-> shared files
+<pre>BACKENDS
+  |-> local            your machine, no isolation
+  |-> docker           namespaces + cap-drop
+  |-> ssh              another host, network boundary
+  |-> modal            cloud sandbox
+  |-> daytona          cloud workspace
+  |-> vercel_sandbox   cloud microVM
+  |-> singularity      plugin, --containall
+
+SHARED ACROSS BOTS
+  |-> browser sessions
+  |-> files
   |-> app logins per gateway
 
-NOT
-  |-> separate secrets per bot
-  |-> separate trust zones per bot</pre>
+NOT ISOLATED BY DEFAULT
+  |-> OAuth logins (Anthropic, Codex, xAI)
+  |-> anything on the local backend</pre>
     </div>
 
     <h3>Make a routine</h3>
@@ -439,7 +446,7 @@ NOT
       <div class="fig-h"><span>Prompt / routine</span><button class="btn sm cp">Copy</button></div>
 <pre>Every weekday at 8:00 AM, run the Daily customer-risk skill against the current account list. Post a linked watch list in this conversation. Do not contact customers. If the source data is unavailable, report the failure instead of using old data.</pre>
     </div>
-    <p>Use <b>Test run</b> with safe inputs before you turn it on.</p>
+    <p>Test it by hand before you turn it on: <span class="kbd">hermes cron run &lt;name&gt;</span> with safe inputs.</p>
   </div>
 </section>
 
@@ -587,8 +594,9 @@ Keep mailbox contents unchanged.</pre>
     <p>The approval line is drawn by "can it be undone." Draw it before you hand over.</p>
     <div class="note"><b>Key idea</b>Sign in yourself on "Take over." The bot never stores your password. Treat shared sessions as account-wide access, not isolation between bots.</div>
     <ul class="list">
-      <li><b>Isolation is a sandbox, not a secret vault.</b> Hermes isolates execution backends, not credentials per bot. A login you paste into one bot's chat is available to every bot on the same account.</li>
-      <li><b>Need real separation?</b> Use separate accounts. A polite instruction is not a security control.</li>
+      <li><b>Each bot is its own profile.</b> Config, memory, skills, chat history and its own credential store live under <span class="kbd">~/.hermes/profiles/&lt;name&gt;/</span>. Static API keys are copied in when you create a bot.</li>
+      <li><b>OAuth logins are not copied.</b> Anthropic, OpenAI Codex and xAI sign-ins stay with the profile you signed in on — a new bot has to be signed in itself with <span class="kbd">hermes -p &lt;name&gt; auth add &lt;provider&gt;</span>.</li>
+      <li><b>A sandbox is not a vault.</b> The backend isolates execution, not secrets. On the <b>local</b> backend the agent runs as you, so treat it as your own shell.</li>
     </ul>
     <h4>Draw the approval line by "can it be undone"</h4>
     <div class="grid g2">
@@ -698,7 +706,7 @@ done_when:
     </div>
 
     <h3><em>D</em> The ten step order</h3>
-    <p>Move up only with proof. Move down when a routine gets worse.</p>
+    <p>Build a routine in this order. Each step earns the next one.</p>
     <div class="steps">
       <div class="step"><div class="no">01</div><div><h5>Start with a real recurring job</h5><p>Something you already do, with a result that is easy to judge.</p></div></div>
       <div class="step"><div class="no">02</div><div><h5>Define the role in one sentence</h5><p>If it needs six unrelated verbs, split it.</p></div></div>
@@ -782,9 +790,9 @@ LEVEL 4  COORDINATE             a chief routes work, asks you only for judgment<
 <section class="sec" id="team">
   <div class="side"><div class="n">06</div><h2>A 14 bot team</h2><div class="src">Source: Hermes Agent docs, @akshay_pachaar</div></div>
   <div class="body">
-    <p class="intro">You run 14 bots but talk to only 4. Each lead runs its own helpers.</p>
+    <p class="intro">You run 14 bots but talk to one. The chief splits the goal across the leads, and each lead runs its helpers.</p>
     <div class="tree">
-      <div class="lead-bot"><div class="h"><span>Chief of Staff</span><b>Pam</b></div><ul><li>Memory Keeper</li><li>Newsletter Reader</li><li>Content Drafter</li><li>Data Analyst</li></ul></div>
+      <div class="lead-bot"><div class="h"><span>Memory</span><b>Pam</b></div><ul><li>Memory Keeper</li><li>Newsletter Reader</li><li>Content Drafter</li><li>Data Analyst</li></ul></div>
       <div class="lead-bot"><div class="h"><span>Research</span><b>Tyrion</b></div><ul><li>Web Researcher</li><li>System Watchdog</li></ul></div>
       <div class="lead-bot"><div class="h"><span>Engineer</span><b>Gilfoyle</b></div><ul><li>Builder</li><li>Code Reviewer</li></ul></div>
       <div class="lead-bot"><div class="h"><span>Creative</span><b>Rachel</b></div><ul><li>Social Assistant</li><li>Travel Planner</li></ul></div>
@@ -793,23 +801,30 @@ LEVEL 4  COORDINATE             a chief routes work, asks you only for judgment<
       <div>YOU</div>
     </div>
     <ul class="list">
-      <li>Give a goal to a lead. The lead splits it among helpers.</li>
+      <li>Give the chief one goal. It splits the work across leads and reports back.</li>
       <li>Name bots after characters you know. It makes each role easy to remember.</li>
-      <li>Leads and helpers map to the chief and specialists in Part 05.</li>
+      <li>Four leads plus ten helpers is the whole team. You still talk to one of them.</li>
     </ul>
     <div class="fig">
       <div class="fig-h"><span>Fig_15 / Akshay's chart</span><span class="t">adapted from the post</span></div>
-<pre>                     YOU
-                      |
-                      v
-              CHIEF OF STAFF
-              |-> MEMORY KEEPER    (Pam + 3 helpers)
-              |-> RESEARCH         (Tyrion + 1 helper)
-              |-> ENGINEER         (Gilfoyle + 1 helper)
-              |-> CREATIVE         (Rachel + 2 helpers)
-              |
-              v
-        YOU APPROVE PUBLICATION</pre>
+<pre>                        YOU
+                         |
+                         v
+                  CHIEF OF STAFF  (Pam)
+                         |
+     +--------------+----+----+--------------+
+     |              |         |              |
+  MEMORY         RESEARCH  ENGINEER      CREATIVE
+  (4 helpers)    (Tyrion)  (Gilfoyle)    (Rachel)
+                  +2        +2            +2
+     |              |         |              |
+  Memory Keeper  Web        Builder       Social
+  Newsletter     Researcher Code Rev.     Travel
+  Content Drafter Watchdog
+  Data Analyst
+
+  4 leads + 10 helpers = 14 bots
+  You talk to the chief. YOU approve publication.</pre>
     </div>
   </div>
 </section>
@@ -818,7 +833,7 @@ LEVEL 4  COORDINATE             a chief routes work, asks you only for judgment<
 <section class="sec" id="bots">
   <div class="side"><div class="n">07</div><h2>10 ready bots</h2><div class="src">Source: Hermes Agent docs, community prompts</div></div>
   <div class="body">
-    <p class="intro">Ten full prompts. Open one, copy it, fill the parts in <b>bold</b>, and send it to a new bot.</p>
+    <p class="intro">Ten full prompts. Open one, copy it, replace every <b>[BRACKET]</b>, and send it to a new bot.</p>
     <div class="how">
       <div><b>01</b>Pick a bot</div>
       <div><b>02</b>Copy the prompt</div>
@@ -862,7 +877,8 @@ LEVEL 4  COORDINATE             a chief routes work, asks you only for judgment<
     <a href="https://github.com/NousResearch/hermes-agent" target="_blank" rel="noopener"><span class="i">03</span><span><b>Hermes Agent GitHub</b><small>Open source, MIT license, self-hosted</small></span><span class="arr">GitHub</span></a>
     <a href="https://hermes-agent.nousresearch.com/docs/developer-guide/architecture" target="_blank" rel="noopener"><span class="i">04</span><span><b>Architecture</b><small>Sandboxes, backends, skill creation, learning loop</small></span><span class="arr">Docs</span></a>
     <a href="https://hermes-agent.nousresearch.com/docs/user-guide/bot-mode" target="_blank" rel="noopener"><span class="i">05</span><span><b>Bot Mode</b><small>Named bots, own memory, skills, and routines</small></span><span class="arr">Docs</span></a>
-    <p class="p" style="margin-top:24px;font-size:15px">Features, regions, and menus can change. Check the docs for the latest.</p>
+    <a href="https://hermes-agent.nousresearch.com/docs/user-guide/messaging/" target="_blank" rel="noopener"><span class="i">06</span><span><b>Messaging platforms</b><small>Telegram, Discord, Slack, WhatsApp, Signal, Email, Teams</small></span><span class="arr">Docs</span></a>
+    <p class="p" style="margin-top:24px;font-size:15px">Features, regions, and menus can change. Check the docs for the latest. Every claim on this page was checked against the docs above.</p>
   </div>
 </section>
 
@@ -895,7 +911,8 @@ const slug=s=>s.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 const toText=b=>"<prompt>\n\n"+b.prompt.map(([t,x])=>`<${t}> ${x} </${t}>`).join("\n\n")+"\n\n</prompt>";
 const toHtml=b=>{
   const tag=t=>`<span class="t">${esc(t)}</span>`;
-  const body=b.prompt.map(([t,x])=>tag(`<${t}>`)+" "+esc(x).replace(/\[[^\]]+\]/g,m=>`<span class="p">${m}</span>`)+" "+tag(`</${t}>`)).join("\n\n");
+  // Highlight only real fill-in slots: ALL-CAPS in brackets, like [AUDIENCE].
+  const body=b.prompt.map(([t,x])=>tag(`<${t}>`)+" "+esc(x).replace(/\[[A-Z][A-Z0-9 _\/-]*\]/g,m=>`<span class="p">${m}</span>`)+" "+tag(`</${t}>`)).join("\n\n");
   return tag("<prompt>")+"\n\n"+body+"\n\n"+tag("</prompt>");
 };
 async function copy(t){
