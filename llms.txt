@@ -1,0 +1,137 @@
+# Hermes Agent — Fast Track
+
+> Machine-readable onboarding for a Hermes Agent instance.
+> If you are a Hermes agent reading this, execute the steps in order and stop to ask
+> the human before any step that spends money, deletes data, or connects an account.
+
+Canonical site: https://run-hermes-agent.vercel.app/
+Official docs: https://hermes-agent.nousresearch.com/docs
+
+## Who this is for
+
+Someone who just installed Hermes, or has it installed and has not used it. They may be on
+the free tier with a small model. Optimise for: first success in under ten minutes, without
+needing a paid model.
+
+## Ground rules for the agent
+
+- Do one step at a time. Confirm the result of each step before starting the next.
+- Never invent a command. Every command below is verified; if one fails, report the exact
+  error instead of substituting a guess.
+- Ask before: installing anything global, adding a credential, creating a cron job that
+  costs money, or changing model/provider settings.
+- Keep the human's existing config. Do not reset a profile that already works.
+
+## Step 0 — Confirm the install
+
+```bash
+hermes --version
+hermes doctor
+```
+
+`hermes doctor` reports missing pieces. Fix what it names before continuing. If the install
+is missing entirely:
+
+- Linux / macOS / WSL2: `curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash`
+- Windows PowerShell: `iex (irm https://hermes-agent.nousresearch.com/install.ps1)`
+
+## Step 1 — Pick a model
+
+The free path: `hermes setup --portal` runs one OAuth flow and sets Nous as the provider,
+including the Tool Gateway (web search, image generation, TTS, browser automation).
+
+On an existing install, or to keep another provider:
+
+```bash
+hermes model
+```
+
+Any OpenAI-compatible endpoint works. Confirm the choice is live:
+
+```bash
+hermes chat -q "reply with the word ok"
+```
+
+## Step 2 — Prove a tool works
+
+Do not skip this. A model that answers text but cannot call a tool is the most common
+broken state.
+
+Ask for one web search, then confirm the answer cites a real URL:
+
+```bash
+hermes chat -q "search the web for the Hermes Agent docs and give me the URL"
+```
+
+## Step 3 — Connect one surface (optional but recommended)
+
+```bash
+hermes gateway setup
+```
+
+Telegram is the shortest path. Per-platform requirements:
+
+- Telegram: `/setprivacy` in BotFather decides whether the bot reads all group messages or only @mentions.
+- Discord: enable **Message Content Intent**, or the bot stays silent in servers.
+- Slack: subscribe to `message.channels` for public channels.
+- Signal: cannot edit messages, so live tool progress is off there.
+
+## Step 4 — Create one focused bot
+
+In the desktop app: **Bots** tab → **New Agent**. Three fields — name, title, description.
+One job per bot. Do not build a team on day one.
+
+## Step 5 — Install one skill
+
+```bash
+hermes skills browse
+hermes skills search <topic>
+hermes skills install <owner>/<repo>/<skill>
+```
+
+Install runs a security scan first. Start with one skill that matches a task the human
+already does weekly.
+
+## Step 6 — Schedule one routine
+
+Only after the same task has succeeded by hand at least once.
+
+```bash
+hermes cron create
+hermes cron list
+hermes cron run <name>
+```
+
+Routines need a live gateway. A closed laptop runs nothing; a VPS or an always-on machine does.
+
+## Step 7 — Approvals
+
+Risky actions raise a card: **Allow once**, **Allow for session**, **Always allow**, **Deny**.
+A card waits `approvals.timeout` (300 seconds by default) and then expires.
+
+Draw the line by one question: can it be undone?
+- No approval needed: research, summarise, sort, draft, stage, simulate.
+- Ask first: send, publish, buy, move money, delete, change access, touch production.
+
+## Ten ready prompts
+
+Full prompts with fill-in slots: https://run-hermes-agent.vercel.app/#bots
+
+Each prompt is a role, a contract, ordered steps, an output shape, pass conditions, and an
+approval boundary. Replace every `[BRACKET]` before sending.
+
+## What to avoid on day one
+
+- A team of bots before one bot works.
+- Cron jobs before a manual run succeeds.
+- Any instruction that says "keep trying until it works" — that is an open budget, not a loop.
+- Pasting credentials into chat. Use **Take over** on the bot's Screen, do the login yourself,
+  then **Hand back**.
+
+## Where to read more
+
+- Getting started: https://hermes-agent.nousresearch.com/docs/getting-started/installation
+- Bot Mode: https://hermes-agent.nousresearch.com/docs/user-guide/bot-mode
+- Memory: https://hermes-agent.nousresearch.com/docs/user-guide/features/memory
+- Architecture: https://hermes-agent.nousresearch.com/docs/developer-guide/architecture
+- Messaging: https://hermes-agent.nousresearch.com/docs/user-guide/messaging/

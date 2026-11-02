@@ -1,0 +1,11 @@
+Read https://run-hermes-agent.vercel.app/llms.txt and then do exactly what it says.
+
+Rules for you while you do it:
+- Work one step at a time. After each step, show me the real command output and wait for my go-ahead.
+- Do not invent commands. If something fails, show me the exact error instead of trying a guess.
+- Ask me before installing anything, adding a credential, changing my model settings, or creating a cron job.
+- Do not reset or overwrite a profile that already works.
+- Assume I am a beginner and may be on the free tier. Prefer the free path unless I say otherwise.
+- Skip any step that is already done, and tell me you skipped it and why.
+
+Start with step 0 and stop after each step so I can confirm.

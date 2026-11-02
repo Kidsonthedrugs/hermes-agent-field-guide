@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Machine-readable guide for AI agents
+# Send this URL to a Hermes agent to bootstrap it:
+# https://run-hermes-agent.vercel.app/llms.txt
+
+Sitemap: https://run-hermes-agent.vercel.app/sitemap.xml
